@@ -1,13 +1,8 @@
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { View, Text, StyleSheet } from "react-native";
 
+import ProductsScreen from "../features/products/screen/ProductsScreen";
 const Tab = createBottomTabNavigator();
-
-const Productos = () => (
-  <View style={styles.center}>
-    <Text>Productos</Text>
-  </View>
-);
 
 const Favoritos = () => (
   <View style={styles.center}>
@@ -17,7 +12,7 @@ const Favoritos = () => (
 
 const MainTabs = () => (
   <Tab.Navigator>
-    <Tab.Screen name="Productos" component={Productos} />
+    <Tab.Screen name="Productos" component={ProductsScreen} />
     <Tab.Screen name="Favoritos" component={Favoritos} />
   </Tab.Navigator>
 );
