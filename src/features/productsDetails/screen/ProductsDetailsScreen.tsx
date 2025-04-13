@@ -1,12 +1,20 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity, StyleSheet, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  TouchableOpacity,
+  StyleSheet,
+  ScrollView,
+} from "react-native";
 import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RootStackParamList } from "../../../types/navigation";
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons } from "@expo/vector-icons";
 
 const ProductDetailsScreen = () => {
-  const route = useRoute<RouteProp<RootStackParamList, keyof RootStackParamList>>();
+  const route =
+    useRoute<RouteProp<RootStackParamList, keyof RootStackParamList>>();
   const { productId } = route.params || {};
   const [product, setProduct] = useState<any>(null);
   const [isFavorite, setIsFavorite] = useState(false);
@@ -14,7 +22,9 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     const fetchProduct = async () => {
-      const response = await fetch(`https://fakestoreapi.com/products/${productId}`);
+      const response = await fetch(
+        `https://fakestoreapi.com/products/${productId}`
+      );
       const data = await response.json();
       setProduct(data);
     };
@@ -23,34 +33,50 @@ const ProductDetailsScreen = () => {
 
   useEffect(() => {
     const checkFavorite = async () => {
-      const favorites = await AsyncStorage.getItem('favorites');
+      const favorites = await AsyncStorage.getItem("favorites");
       const parsedFavorites = favorites ? JSON.parse(favorites) : [];
-      setIsFavorite(parsedFavorites.includes(productId));
+      const exists = parsedFavorites.some((item: any) => item.id === productId);
+      setIsFavorite(exists);
     };
+
     if (productId) {
       checkFavorite();
     }
   }, [productId]);
 
   const handleFavoritePress = async () => {
-    const favorites = await AsyncStorage.getItem('favorites');
-    const parsedFavorites = favorites ? JSON.parse(favorites) : [];
-    
-    if (isFavorite) {
-      const updatedFavorites = parsedFavorites.filter((id: number) => id !== productId);
-      await AsyncStorage.setItem('favorites', JSON.stringify(updatedFavorites));
-    } else {
-      parsedFavorites.push(productId);
-      await AsyncStorage.setItem('favorites', JSON.stringify(parsedFavorites));
+    try {
+      const favorites = await AsyncStorage.getItem("favorites");
+      const parsedFavorites = favorites ? JSON.parse(favorites) : [];
+
+      if (isFavorite) {
+        const updatedFavorites = parsedFavorites.filter(
+          (item: any) => item.id !== product.id
+        );
+        await AsyncStorage.setItem(
+          "favorites",
+          JSON.stringify(updatedFavorites)
+        );
+      } else {
+        parsedFavorites.push(product);
+        await AsyncStorage.setItem(
+          "favorites",
+          JSON.stringify(parsedFavorites)
+        );
+      }
+
+      setIsFavorite(!isFavorite);
+    } catch (error) {
+      console.error("Error al manejar favoritos:", error);
     }
-    
-    setIsFavorite(!isFavorite);
   };
 
   if (!product) {
     return (
       <View style={styles.loadingContainer}>
-        <Text style={styles.loadingText}>Cargando detalles del producto...</Text>
+        <Text style={styles.loadingText}>
+          Cargando detalles del producto...
+        </Text>
       </View>
     );
   }
@@ -58,7 +84,10 @@ const ProductDetailsScreen = () => {
   return (
     <View style={styles.container}>
       <ScrollView contentContainerStyle={styles.scrollContent}>
-        <TouchableOpacity style={styles.backButton} onPress={() => navigation.goBack()}>
+        <TouchableOpacity
+          style={styles.backButton}
+          onPress={() => navigation.goBack()}
+        >
           <Ionicons name="arrow-back" size={24} color="#fff" />
         </TouchableOpacity>
         <Image source={{ uri: product.image }} style={styles.productImage} />
@@ -68,7 +97,10 @@ const ProductDetailsScreen = () => {
           <Text style={styles.productDescription}>{product.description}</Text>
           <Text style={styles.productPrice}>${product.price}</Text>
           <TouchableOpacity
-            style={[styles.favoriteButton, isFavorite && styles.favoriteButtonActive]}
+            style={[
+              styles.favoriteButton,
+              isFavorite && styles.favoriteButtonActive,
+            ]}
             onPress={handleFavoritePress}
           >
             <Text style={styles.favoriteButtonText}>
@@ -90,7 +122,7 @@ const styles = StyleSheet.create({
     paddingBottom: 20,
   },
   backButton: {
-    position: 'absolute',
+    position: "absolute",
     top: 40,
     left: 16,
     padding: 8,
@@ -110,7 +142,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderRadius: 16,
     marginHorizontal: 16,
-    shadowColor: '#000',
+    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 4,
