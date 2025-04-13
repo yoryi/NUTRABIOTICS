@@ -6,9 +6,10 @@ import { RootStackParamList } from "../types/navigation";
 import Login from "../features/login/screen/LoginScreen";
 import Register from "../features/register/screen/RegisterScreen";
 import MainTabs from "./mainTabs";
+import ProductDetailsScreen from "../features/productsDetails/screen/ProductsDetailsScreen";
 
 const Stack = createNativeStackNavigator<RootStackParamList>();
-export default function AuthNavigator() {
+export default function Navigator() {
   return (
     <NavigationContainer>
       <Stack.Navigator
@@ -17,6 +18,7 @@ export default function AuthNavigator() {
       >
         <Stack.Screen name="Login" component={Login} />
         <Stack.Screen name="Register" component={Register} />
+        <Stack.Screen name="ProductDetailsScreen" component={ProductDetailsScreen} />
         <Stack.Screen
           name="Main"
           component={MainTabs}

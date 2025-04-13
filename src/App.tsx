@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
-import AuthNavigator from "./navigation/authNavigator";
+import Navigator from "./navigation/navigator";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -20,5 +20,5 @@ export default function App() {
     return null;
   }
 
-  return <AuthNavigator />;
+  return <Navigator />;
 }

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet, FlatList, Image, RefreshControl } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  FlatList,
+  Image,
+  RefreshControl,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../types/navigation";
@@ -20,7 +28,11 @@ export default function ProductsScreen() {
     setRefreshing(false);
   };
 
-  const handleProductPress = (productId: number) => {};
+  const handleProductPress = (productId: number) => {
+    navigation.navigate("ProductDetailsScreen", {
+      productId: productId,
+    });
+  };
 
   const renderProduct = ({ item }: { item: any }) => (
     <View style={styles.productContainer}>
@@ -67,7 +79,9 @@ export default function ProductsScreen() {
       data={data}
       keyExtractor={(item) => item.id.toString()}
       renderItem={renderProduct}
-      refreshControl={<RefreshControl refreshing={refreshing} onRefresh={onRefresh} />}
+      refreshControl={
+        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+      }
       contentContainerStyle={styles.listContainer}
     />
   );
