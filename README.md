@@ -79,3 +79,8 @@ yarn start
 expo run:ios
 expo run:android
 ```
+
+### Vista Previa App
+
+![Vista previa de la app](https://i.ibb.co/d0z6FhtV/Captura-de-pantalla-2025-04-14-a-la-s-4-04-49-a-m.png)
+
