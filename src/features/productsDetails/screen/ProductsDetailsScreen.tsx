@@ -11,6 +11,12 @@ import { RouteProp, useRoute, useNavigation } from "@react-navigation/native";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { RootStackParamList } from "../../../types/navigation";
 import { Ionicons } from "@expo/vector-icons";
+import { auth } from "../../../common/config/firebaseConfig";
+import {
+  addFavorite,
+  removeFavorite,
+  getFavoritesByUser,
+} from "../services/productsApi";
 
 const ProductDetailsScreen = () => {
   const route =
@@ -19,6 +25,8 @@ const ProductDetailsScreen = () => {
   const [product, setProduct] = useState<any>(null);
   const [isFavorite, setIsFavorite] = useState(false);
   const navigation = useNavigation();
+
+  const currentUser = auth.currentUser;
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -32,45 +40,54 @@ const ProductDetailsScreen = () => {
   }, [productId]);
 
   useEffect(() => {
-    const checkFavorite = async () => {
-      const favorites = await AsyncStorage.getItem("favorites");
-      const parsedFavorites = favorites ? JSON.parse(favorites) : [];
-      const exists = parsedFavorites.some((item: any) => item.id === productId);
+    const syncFavoriteStatus = async () => {
+      if (!currentUser) return;
+      const favorites = await getFavoritesByUser(currentUser.uid);
+      const exists = favorites.some(
+        (item: { itemId: string }) => String(item.itemId) === String(productId)
+      );
+
+      const localFavorites = await AsyncStorage.getItem("favorites");
+      const parsedLocal = localFavorites ? JSON.parse(localFavorites) : [];
+
+      if (exists && !parsedLocal.find((i: any) => i.id === productId)) {
+        parsedLocal.push(product);
+        await AsyncStorage.setItem("favorites", JSON.stringify(parsedLocal));
+      }
+
       setIsFavorite(exists);
     };
 
-    if (productId) {
-      checkFavorite();
+    if (productId && product) {
+      syncFavoriteStatus();
     }
-  }, [productId]);
+  }, [productId, product]);
 
   const handleFavoritePress = async () => {
+    if (!currentUser || !product) return;
     try {
-      const favorites = await AsyncStorage.getItem("favorites");
-      const parsedFavorites = favorites ? JSON.parse(favorites) : [];
+      const idProduct = product.id.toString();
+      const localFavorites = await AsyncStorage.getItem("favorites");
+      let parsed = localFavorites ? JSON.parse(localFavorites) : [];
 
       if (isFavorite) {
-        const updatedFavorites = parsedFavorites.filter(
-          (item: any) => item.id !== product.id
-        );
-        await AsyncStorage.setItem(
-          "favorites",
-          JSON.stringify(updatedFavorites)
-        );
+        await removeFavorite(currentUser.uid, idProduct);
+        parsed = parsed.filter((item: any) => item.itemId !== idProduct);
       } else {
-        parsedFavorites.push(product);
-        await AsyncStorage.setItem(
-          "favorites",
-          JSON.stringify(parsedFavorites)
-        );
+        await addFavorite({
+          userId: currentUser.uid,
+          itemId: idProduct,
+          itemData: product,
+        });
+        parsed.push(product);
       }
-
-      setIsFavorite(!isFavorite);
+      await AsyncStorage.setItem("favorites", JSON.stringify(parsed));
+      setIsFavorite(prev => !prev);
     } catch (error) {
       console.error("Error al manejar favoritos:", error);
     }
   };
-
+  
   if (!product) {
     return (
       <View style={styles.loadingContainer}>
