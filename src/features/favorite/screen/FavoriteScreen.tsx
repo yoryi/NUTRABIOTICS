@@ -34,7 +34,6 @@ const FavoritesScreen = () => {
       Alert.alert("Producto eliminado", "Se eliminó de tus favoritos.");
       fetchFavorites();
     } catch (err) {
-      console.error("Error removing favorite:", err);
       Alert.alert("Error", "No se pudo eliminar de favoritos.");
     }
   };
@@ -60,7 +59,6 @@ const FavoritesScreen = () => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Mis Favoritos</Text>
       {loading ? (
         <Text style={styles.emptyText}>Cargando...</Text>
       ) : favorites.length === 0 ? (

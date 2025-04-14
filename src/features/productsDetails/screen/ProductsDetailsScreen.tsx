@@ -17,27 +17,17 @@ import {
   removeFavorite,
   getFavoritesByUser,
 } from "../services/productsApi";
+import { useProductDetails } from "../hooks/useProductDetails";
 
 const ProductDetailsScreen = () => {
   const route =
     useRoute<RouteProp<RootStackParamList, keyof RootStackParamList>>();
   const { productId } = route.params || {};
-  const [product, setProduct] = useState<any>(null);
+  const { product, loading } = useProductDetails(productId as number);
   const [isFavorite, setIsFavorite] = useState(false);
   const navigation = useNavigation();
 
   const currentUser = auth.currentUser;
-
-  useEffect(() => {
-    const fetchProduct = async () => {
-      const response = await fetch(
-        `https://fakestoreapi.com/products/${productId}`
-      );
-      const data = await response.json();
-      setProduct(data);
-    };
-    fetchProduct();
-  }, [productId]);
 
   useEffect(() => {
     const syncFavoriteStatus = async () => {
@@ -87,8 +77,8 @@ const ProductDetailsScreen = () => {
       console.error("Error al manejar favoritos:", error);
     }
   };
-  
-  if (!product) {
+
+  if (loading || !product) {
     return (
       <View style={styles.loadingContainer}>
         <Text style={styles.loadingText}>

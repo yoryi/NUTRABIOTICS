@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 
 const auth = getAuth();
 
-//Funtions
+//Funtions Auth
 export const logOut = () => signOut(auth);
 export const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);

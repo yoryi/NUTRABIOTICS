@@ -8,12 +8,7 @@ import {
   doc,
 } from "firebase/firestore";
 import { db } from "../../../common/config/firebaseConfig";
-
-export interface Favorite {
-  userId: string;
-  itemId: string; 
-  itemData?: any;
-}
+import { Favorite } from "../types";
 
 export const addFavorite = async (favorite: Favorite) => {
   try {

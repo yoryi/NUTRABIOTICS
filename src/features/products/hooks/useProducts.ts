@@ -1,11 +1,6 @@
 import { useState, useCallback } from "react";
-import { getProducts, Product } from "../services/productsApi";
-
-interface ProductsState {
-  loading: boolean;
-  error: string | null;
-  data: Product[] | null;
-}
+import { getProducts } from "../services/productsApi";
+import { ProductsState } from "../types";
 
 export const useProducts = () => {
   const [state, setState] = useState<ProductsState>({
