@@ -78,7 +78,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 16,
-    backgroundColor: "#fff",
+    backgroundColor: "#F4F6F5",
   },
   title: {
     fontSize: 24,
@@ -95,19 +95,19 @@ const styles = StyleSheet.create({
   favoriteItem: {
     flexDirection: "row",
     marginBottom: 16,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: "#fff",
     padding: 16,
-    borderRadius: 8,
+    borderRadius: 16,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 3,
+    shadowRadius: 6,
+    elevation: 5,
   },
   productImage: {
     width: 80,
     height: 80,
-    borderRadius: 8,
+    borderRadius: 16,
     marginRight: 16,
   },
   favoriteInfo: {
@@ -125,7 +125,7 @@ const styles = StyleSheet.create({
   },
   removeButton: {
     backgroundColor: "#FF6347",
-    padding: 8,
+    padding: 10,
     borderRadius: 50,
     alignSelf: "flex-start",
     marginTop: 8,

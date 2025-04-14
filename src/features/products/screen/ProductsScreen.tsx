@@ -7,6 +7,7 @@ import {
   FlatList,
   Image,
   RefreshControl,
+  SafeAreaView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "@react-navigation/native";
@@ -75,33 +76,44 @@ export default function ProductsScreen() {
   }
 
   return (
-    <FlatList
-      data={data}
-      keyExtractor={(item) => item.id.toString()}
-      renderItem={renderProduct}
-      refreshControl={
-        <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
-      }
-      contentContainerStyle={styles.listContainer}
-    />
+    <SafeAreaView style={styles.container}>
+      <FlatList
+        data={data}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(item) => item.id.toString()}
+        renderItem={renderProduct}
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
+        contentContainerStyle={styles.listContainer}
+      />
+    </SafeAreaView>
   );
 }
 
 const styles = StyleSheet.create({
+  container: { flex: 1, backgroundColor: "#F4F6F5" },
   listContainer: {
-    paddingBottom: 16,
+    padding: 16,
   },
   productContainer: {
     flexDirection: "row",
     padding: 16,
-    borderBottomWidth: 1,
-    borderBottomColor: "#ddd",
+    backgroundColor: "#fff",
+    borderRadius: 16,
+    marginBottom: 16,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 4,
   },
   productImage: {
     width: 80,
     height: 80,
-    borderRadius: 8,
+    borderRadius: 12,
     marginRight: 16,
+    backgroundColor: "#e0e0e0",
   },
   productInfo: {
     flex: 1,
@@ -109,18 +121,21 @@ const styles = StyleSheet.create({
   },
   productTitle: {
     fontSize: 18,
-    fontWeight: "bold",
+    fontWeight: "600",
+    color: "#333",
   },
   productPrice: {
     fontSize: 16,
-    color: "#888",
+    color: "#777",
     marginVertical: 8,
   },
   detailsButton: {
-    backgroundColor: "#007AFF",
-    padding: 8,
-    borderRadius: 5,
+    backgroundColor: "#35956F",
+    paddingVertical: 8,
+    paddingHorizontal: 12,
+    borderRadius: 10,
     alignItems: "center",
+    alignSelf: "flex-start",
   },
   detailsButtonText: {
     color: "#fff",
@@ -130,6 +145,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#F4F6F5",
   },
   errorContainer: {
     flex: 1,
@@ -141,6 +157,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f1f1f1",
+    backgroundColor: "#F4F6F5",
   },
 });

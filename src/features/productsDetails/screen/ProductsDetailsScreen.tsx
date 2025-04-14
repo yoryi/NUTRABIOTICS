@@ -72,7 +72,7 @@ const ProductDetailsScreen = () => {
         parsed.push(product);
       }
       await AsyncStorage.setItem("favorites", JSON.stringify(parsed));
-      setIsFavorite(prev => !prev);
+      setIsFavorite((prev) => !prev);
     } catch (error) {
       console.error("Error al manejar favoritos:", error);
     }
@@ -90,13 +90,10 @@ const ProductDetailsScreen = () => {
 
   return (
     <View style={styles.container}>
-      <ScrollView contentContainerStyle={styles.scrollContent}>
-        <TouchableOpacity
-          style={styles.backButton}
-          onPress={() => navigation.goBack()}
-        >
-          <Ionicons name="arrow-back" size={24} color="#fff" />
-        </TouchableOpacity>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        contentContainerStyle={styles.scrollContent}
+      >
         <Image source={{ uri: product.image }} style={styles.productImage} />
         <View style={styles.productInfo}>
           <Text style={styles.productTitle}>{product.title}</Text>
@@ -123,48 +120,50 @@ const ProductDetailsScreen = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#F4F4F4",
+    backgroundColor: "#F4F6F5",
   },
   scrollContent: {
-    paddingBottom: 20,
+    paddingBottom: 32,
   },
   backButton: {
     position: "absolute",
     top: 15,
     left: 16,
     padding: 8,
-    backgroundColor: "#000",
+    backgroundColor: "#333",
     borderRadius: 50,
     zIndex: 1,
   },
   productImage: {
     width: "100%",
     height: 300,
-    borderRadius: 16,
-    marginTop: 80,
-    marginBottom: 16,
+    paddingTop: 20,
+    paddingLeft: 15,
+    paddingRight: 15,
+    borderRadius: 20,
+    marginBottom: 20,
   },
   productInfo: {
-    padding: 16,
+    padding: 20,
     backgroundColor: "#fff",
-    borderRadius: 16,
+    borderRadius: 20,
     marginHorizontal: 16,
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 5,
+    shadowRadius: 8,
+    elevation: 6,
   },
   productTitle: {
     fontSize: 26,
-    fontWeight: "bold",
-    marginBottom: 8,
+    fontWeight: "700",
     color: "#333",
+    marginBottom: 6,
   },
   productCategory: {
-    fontSize: 18,
-    color: "#888",
-    marginBottom: 8,
+    fontSize: 16,
+    color: "#999",
+    marginBottom: 6,
   },
   productDescription: {
     fontSize: 16,
@@ -178,23 +177,24 @@ const styles = StyleSheet.create({
     marginBottom: 16,
   },
   favoriteButton: {
-    backgroundColor: "#007AFF",
+    backgroundColor: "#35956F",
     paddingVertical: 12,
-    borderRadius: 8,
+    borderRadius: 10,
     alignItems: "center",
   },
   favoriteButtonActive: {
-    backgroundColor: "#FF6347",
+    backgroundColor: "#FF6B6B",
   },
   favoriteButtonText: {
     color: "#fff",
     fontWeight: "bold",
+    fontSize: 16,
   },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#fff",
+    backgroundColor: "#F4F6F5",
   },
   loadingText: {
     fontSize: 18,
