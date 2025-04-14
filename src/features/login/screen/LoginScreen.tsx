@@ -12,6 +12,7 @@ import {
 import { NavigationProp } from "@react-navigation/native";
 import { RootStackParamList } from "../../../types/navigation";
 import { useLogin } from "../hooks/useLogin";
+import colors from "../../../common/config/colors";
 
 export default function LoginScreen() {
   const [email, setEmail] = useState("");
@@ -37,7 +38,7 @@ export default function LoginScreen() {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.title}>Bienvenido 👋</Text>
+      <Text style={styles.title}>NUTRABIOTICS</Text>
       <Text style={styles.subtitle}>Inicia sesión para continuar</Text>
 
       <TextInput
@@ -72,7 +73,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 24,
+    padding: 30,
     backgroundColor: "#fff",
   },
   title: {
@@ -83,20 +84,20 @@ const styles = StyleSheet.create({
   },
   subtitle: {
     fontSize: 16,
-    color: "#555",
+    color: colors.grayDark,
     marginBottom: 32,
     textAlign: "center",
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: colors.colorInput,
     borderRadius: 10,
     padding: 14,
     marginBottom: 16,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.colorInput,
   },
   button: {
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.secondary,
     padding: 16,
     borderRadius: 10,
     marginTop: 8,
@@ -109,6 +110,6 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     marginTop: 24,
-    color: "#007AFF",
+    color: colors.secondary,
   },
 });

@@ -1,3 +1,4 @@
+import { StatusBar } from "expo-status-bar";
 import { Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
@@ -8,6 +9,7 @@ import ProductDetails from "../features/productsDetails/screen/ProductsDetailsSc
 import { RootStackParamList } from "../types/navigation";
 import { TouchableOpacity } from "react-native";
 import { logOut } from "../common/utils";
+import colors from "../common/config/colors";
 
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator<RootStackParamList>();
@@ -20,41 +22,48 @@ const ProductStack = () => (
 );
 
 const MainTabs = () => (
-  <Tab.Navigator
-    screenOptions={{
-      tabBarActiveTintColor: "#e91e63",
-      tabBarInactiveTintColor: "#b0bec5",
-    }}
-  >
-    <Tab.Screen
-      name="Productos"
-      component={ProductStack}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name="home" size={size} color={color} />
-        ),
+  <>
+    <StatusBar style="light" />
+    <Tab.Navigator
+      screenOptions={{
+        tabBarActiveTintColor: colors.secondary,
+        tabBarInactiveTintColor: colors.grayDark,
+        headerStyle: {
+          backgroundColor: colors.secondary,
+        },
+        headerTintColor: colors.headerText,
       }}
-    />
-    <Tab.Screen
-      name="Favoritos"
-      component={FavoritesScreen}
-      options={{
-        tabBarIcon: ({ color, size }) => (
-          <Ionicons name="heart" size={size} color={color} />
-        ),
-        headerRight: () => (
-          <TouchableOpacity onPress={logOut}>
-            <Ionicons
-              size={24}
-              color="black"
-              name="log-out"
-              style={{ marginRight: 20 }}
-            />
-          </TouchableOpacity>
-        ),
-      }}
-    />
-  </Tab.Navigator>
+    >
+      <Tab.Screen
+        name="Productos"
+        component={ProductStack}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="home" size={size} color={color} />
+          ),
+        }}
+      />
+      <Tab.Screen
+        name="Favoritos"
+        component={FavoritesScreen}
+        options={{
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="heart" size={size} color={color} />
+          ),
+          headerRight: () => (
+            <TouchableOpacity onPress={logOut}>
+              <Ionicons
+                size={24}
+                color={colors.headerText}
+                name="log-out"
+                style={{ marginRight: 20 }}
+              />
+            </TouchableOpacity>
+          ),
+        }}
+      />
+    </Tab.Navigator>
+  </>
 );
 
 export default MainTabs;

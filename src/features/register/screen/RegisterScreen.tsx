@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import { RootStackParamList } from "../../../types/navigation";
 import { useRegister } from "../hooks/useRegister";
+import colors from "../../../common/config/colors";
 
 export default function RegisterScreen() {
   const [email, setEmail] = useState("");
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "center",
-    padding: 24,
+    padding: 30,
     backgroundColor: "#fff",
   },
   title: {
@@ -93,14 +94,14 @@ const styles = StyleSheet.create({
   },
   input: {
     borderWidth: 1,
-    borderColor: "#ddd",
+    borderColor: colors.colorInput,
     borderRadius: 10,
     padding: 14,
     marginBottom: 16,
-    backgroundColor: "#f9f9f9",
+    backgroundColor: colors.colorInput,
   },
   button: {
-    backgroundColor: "#007AFF",
+    backgroundColor: colors.secondary,
     padding: 16,
     borderRadius: 10,
     marginTop: 8,
@@ -113,6 +114,6 @@ const styles = StyleSheet.create({
   link: {
     textAlign: "center",
     marginTop: 24,
-    color: "#007AFF",
+    color: colors.secondary,
   },
 });
