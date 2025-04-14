@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react";
+import React, { useCallback } from "react";
 import {
   View,
   Text,
@@ -8,57 +8,43 @@ import {
   Alert,
   FlatList,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
+import { removeFavorite } from "../../productsDetails/services/productsApi";
 import { useFocusEffect } from "@react-navigation/native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { auth } from "../../../common/config/firebaseConfig";
-import {
-  getFavoritesByUser,
-  removeFavorite,
-} from "../../productsDetails/services/productsApi";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Ionicons } from "@expo/vector-icons";
+import { useFavorites } from "../hooks/useFavorite";
 
 const FavoritesScreen = () => {
-  const [favorites, setFavorites] = useState<any[]>([]);
   const currentUser = auth.currentUser;
-
-  const fetchFavorites = async () => {
-    if (!currentUser) return;
-    try {
-      const favoritesFromFirebase = await getFavoritesByUser(currentUser.uid);
-      await AsyncStorage.setItem(
-        "favorites",
-        JSON.stringify(favoritesFromFirebase)
-      );
-      setFavorites(favoritesFromFirebase);
-    } catch (error) {
-      console.error("Error fetching favorites: ", error);
-    }
-  };
+  const { favorites, loading, fetchFavorites } = useFavorites(currentUser);
 
   useFocusEffect(
     useCallback(() => {
       fetchFavorites();
-    }, [])
+    }, [fetchFavorites])
   );
 
   const handleRemoveFavorite = async (productId: string) => {
     if (!currentUser) return;
     try {
       await removeFavorite(currentUser.uid, productId);
-      const updated = favorites.filter(fav => fav.id !== productId);
+      const updated = favorites.filter((fav) => fav.id !== productId);
       await AsyncStorage.setItem("favorites", JSON.stringify(updated));
-      setFavorites(updated);
       Alert.alert("Producto eliminado", "Se eliminó de tus favoritos.");
+      fetchFavorites();
     } catch (err) {
       console.error("Error removing favorite:", err);
       Alert.alert("Error", "No se pudo eliminar de favoritos.");
     }
   };
-  
 
   const renderFavoriteItem = ({ item }: { item: any }) => (
     <View style={styles.favoriteItem}>
-      <Image source={{ uri: item.itemData.image }} style={styles.productImage} />
+      <Image
+        source={{ uri: item.itemData.image }}
+        style={styles.productImage}
+      />
       <View style={styles.favoriteInfo}>
         <Text style={styles.favoriteTitle}>{item.itemData.title}</Text>
         <Text style={styles.favoritePrice}>${item.itemData.price}</Text>
@@ -75,7 +61,9 @@ const FavoritesScreen = () => {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Mis Favoritos</Text>
-      {favorites.length === 0 ? (
+      {loading ? (
+        <Text style={styles.emptyText}>Cargando...</Text>
+      ) : favorites.length === 0 ? (
         <Text style={styles.emptyText}>No tienes productos en favoritos.</Text>
       ) : (
         <FlatList

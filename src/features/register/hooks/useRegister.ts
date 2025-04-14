@@ -1,11 +1,6 @@
 import { useState, useCallback } from "react";
 import { registerUser } from "../services/authApi";
-
-interface RegisterState {
-  loading: boolean;
-  error: string | null;
-  data: any | null;
-}
+import { RegisterState } from "../types";
 
 export const useRegister = () => {
   const [state, setState] = useState<RegisterState>({
