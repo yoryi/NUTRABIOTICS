@@ -29,7 +29,7 @@ export default function ProductsScreen() {
   };
 
   const handleProductPress = (productId: number) => {
-    navigation.navigate("ProductDetailsScreen", {
+    navigation.navigate("ProductDetails", {
       productId: productId,
     });
   };

@@ -1,6 +1,7 @@
 export type RootStackParamList = {
   Login: undefined;
   Register: undefined;
-  ProductDetailsScreen: { productId: number };
+  ProductosMain: undefined;
+  ProductDetails: { productId: number };
   Main: undefined;
 };
